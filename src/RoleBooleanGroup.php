@@ -3,6 +3,7 @@
 namespace Vyuldashev\NovaPermission;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Laravel\Nova\Fields\BooleanGroup;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Spatie\Permission\Models\Role as RoleModel;
@@ -23,9 +24,10 @@ class RoleBooleanGroup extends BooleanGroup
             }
         );
 
-        $roleClass = app(PermissionRegistrar::class)->getRoleClass();
-
-        $options = $roleClass::get()->pluck($labelAttribute ?? 'name', 'name')->toArray();
+        $options = Cache::remember(self::class . '-role-options', now()->addMinute(), function () {
+            $roleClass = app(PermissionRegistrar::class)->getRoleClass();
+            return $roleClass::get()->pluck($labelAttribute ?? 'name', 'name')->toArray();
+        });
 
         $this->options($options);
     }
