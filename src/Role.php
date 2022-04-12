@@ -6,10 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Resource;
 use Spatie\Permission\PermissionRegistrar;
@@ -19,7 +21,7 @@ class Role extends Resource
     /**
      * The model the resource corresponds to.
      *
-     * @var string
+     * @var class-string
      */
     public static $model = \Spatie\Permission\Models\Role::class;
 
@@ -39,7 +41,7 @@ class Role extends Resource
         'name',
     ];
 
-    public static function getModel()
+    public static function getModel(): \Spatie\Permission\Contracts\Role
     {
         return app(PermissionRegistrar::class)->getRoleClass();
     }
@@ -49,7 +51,7 @@ class Role extends Resource
      *
      * @return string
      */
-    public static function group()
+    public static function group(): string
     {
         return __('nova-permission-tool::navigation.sidebar-label');
     }
@@ -60,17 +62,17 @@ class Role extends Resource
      * @param Request $request
      * @return bool
      */
-    public static function availableForNavigation(Request $request)
+    public static function availableForNavigation(Request $request): bool
     {
         return Gate::allows('viewAny', app(PermissionRegistrar::class)->getRoleClass());
     }
 
-    public static function label()
+    public static function label(): string
     {
         return __('nova-permission-tool::resources.Roles');
     }
 
-    public static function singularLabel()
+    public static function singularLabel(): string
     {
         return __('nova-permission-tool::resources.Role');
     }
@@ -78,10 +80,10 @@ class Role extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param Request $request
-     * @return array
+     * @param NovaRequest $request
+     * @return array<Field>
      */
-    public function fields(Request $request)
+    public function fields(NovaRequest $request): array
     {
         $guardOptions = collect(config('auth.guards'))->mapWithKeys(function ($value, $key) {
             return [$key => $key];
@@ -110,49 +112,5 @@ class Role extends Resource
                 ->searchable()
                 ->singularLabel($userResource::singularLabel()),
         ];
-    }
-
-    /**
-     * Get the cards available for the request.
-     *
-     * @param Request $request
-     * @return array
-     */
-    public function cards(Request $request)
-    {
-        return [];
-    }
-
-    /**
-     * Get the filters available for the resource.
-     *
-     * @param Request $request
-     * @return array
-     */
-    public function filters(Request $request)
-    {
-        return [];
-    }
-
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @param Request $request
-     * @return array
-     */
-    public function lenses(Request $request)
-    {
-        return [];
-    }
-
-    /**
-     * Get the actions available for the resource.
-     *
-     * @param Request $request
-     * @return array
-     */
-    public function actions(Request $request)
-    {
-        return [];
     }
 }

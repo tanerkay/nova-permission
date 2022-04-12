@@ -10,6 +10,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Resource;
 use Spatie\Permission\PermissionRegistrar;
@@ -19,7 +20,7 @@ class Permission extends Resource
     /**
      * The model the resource corresponds to.
      *
-     * @var string
+     * @var class-string
      */
     public static $model = \Spatie\Permission\Models\Permission::class;
 
@@ -39,7 +40,7 @@ class Permission extends Resource
         'name',
     ];
 
-    public static function getModel()
+    public static function getModel(): \Spatie\Permission\Contracts\Permission
     {
         return app(PermissionRegistrar::class)->getPermissionClass();
     }
@@ -119,45 +120,12 @@ class Permission extends Resource
     }
 
     /**
-     * Get the cards available for the request.
-     *
-     * @param Request $request
-     * @return array
-     */
-    public function cards(Request $request): array
-    {
-        return [];
-    }
-
-    /**
-     * Get the filters available for the resource.
-     *
-     * @param Request $request
-     * @return array
-     */
-    public function filters(Request $request): array
-    {
-        return [];
-    }
-
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @param Request $request
-     * @return array
-     */
-    public function lenses(Request $request): array
-    {
-        return [];
-    }
-
-    /**
      * Get the actions available for the resource.
      *
-     * @param Request $request
+     * @param NovaRequest $request
      * @return array
      */
-    public function actions(Request $request): array
+    public function actions(NovaRequest $request): array
     {
         return [
             new AttachToRole,
