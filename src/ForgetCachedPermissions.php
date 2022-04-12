@@ -1,9 +1,8 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Vyuldashev\NovaPermission;
 
+use Closure;
 use Illuminate\Http\Request;
 use Spatie\Permission\PermissionRegistrar;
 use Illuminate\Support\Str;
@@ -13,12 +12,11 @@ class ForgetCachedPermissions
     /**
      * Handle the incoming request.
      *
-     * @param Request|mixed $request
-     * @param \Closure $next
-     *
+     * @param Request $request
+     * @param Closure $next
      * @return mixed
      */
-    public function handle($request, $next)
+    public function handle(Request $request, Closure $next)
     {
         $response = $next($request);
 

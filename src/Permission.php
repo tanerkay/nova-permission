@@ -128,7 +128,7 @@ class Permission extends Resource
     public function actions(NovaRequest $request): array
     {
         return [
-            new AttachToRole,
+            new AttachToRole(),
         ];
     }
 }

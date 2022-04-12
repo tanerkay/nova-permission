@@ -21,9 +21,9 @@ class AttachToRole extends Action
      *
      * @param ActionFields $fields
      * @param Collection $models
-     * @return mixed
+     * @return void
      */
-    public function handle(ActionFields $fields, Collection $models)
+    public function handle(ActionFields $fields, Collection $models): void
     {
         $role = Role::getModel()->find($fields['role']);
         foreach ($models as $model) {

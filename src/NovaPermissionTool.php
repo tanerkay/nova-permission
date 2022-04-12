@@ -61,6 +61,6 @@ class NovaPermissionTool extends Tool
 
     public function menu(Request $request)
     {
-        // TODO: Implement menu() method.
+        // ...
     }
 }
